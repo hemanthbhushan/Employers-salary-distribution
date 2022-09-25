@@ -36,6 +36,32 @@ modifier checkLevelOfEmployee(uint256 _levelOfEmployee ){
        
    }
 
+
+   function changeSalaryStatus(bool paid,uint256 _levelOfEmployee) external  onlyOwner {
+       if(_levelOfEmployee == 1){
+       uint256 length = highLevelEmployeeDetails.length;
+      
+       for(uint256 i = 0;i< length;i++){
+           
+            highLevelEmployeeDetails[i].salaryPaid = paid;
+             }
+            
+          }
+
+       else{
+            uint256 length = midLevelEmployeeDetails.length;
+       for(uint256 i = 0;i< length;i++){
+           
+            highLevelEmployeeDetails[i].salaryPaid = paid;
+             
+             
+          }
+     
+
+       }
+   }
+
+
    function checkEmployeeGotPaid(address _accountNo,uint _levelOfEmployee ) public view  returns(bool){
        require(_accountNo != address(0),"please do not enter the zero address");
        if(_levelOfEmployee == 1){
@@ -53,7 +79,7 @@ modifier checkLevelOfEmployee(uint256 _levelOfEmployee ){
           }
           return true;
        }else{
-            uint256 length = highLevelEmployeeDetails.length;
+            uint256 length = midLevelEmployeeDetails.length;
        uint count;
        for(uint256 i = 0;i< length;i++){
            if(midLevelEmployeeDetails[i].accountNo == _accountNo ){
@@ -164,14 +190,14 @@ modifier checkLevelOfEmployee(uint256 _levelOfEmployee ){
    }
 
 
-      function setSalaries(uint _salary,uint256 _levelOfEmployees) external  onlyOwner{
+      function setSalaries(uint _salary ,uint256 _levelOfEmployees) external  onlyOwner{
         require(_levelOfEmployees == 1 || _levelOfEmployees == 2,"only two type of employess 1 = highLevel , 2 = midLevel ");
         if(_levelOfEmployees == 1){
-             highLevelSalary = _salary;
+             highLevelSalary += _salary ;
 
         }else{
            
-             midLevelSalary = _salary;
+             midLevelSalary += _salary;
         }
        
    }
