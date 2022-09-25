@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0
 
 pragma solidity >=0.7.0 <0.9.0;
-
 import "@openzeppelin/contracts/access/Ownable.sol";
+
 
 contract EmployersSalary is Ownable{
 
@@ -37,6 +37,7 @@ modifier checkLevelOfEmployee(uint256 _levelOfEmployee ){
    }
 
    function checkEmployeeGotPaid(address _accountNo,uint _levelOfEmployee ) public view  returns(bool){
+       require(_accountNo != address(0),"please do not enter the zero address");
        if(_levelOfEmployee == 1){
        uint256 length = highLevelEmployeeDetails.length;
        uint count;
@@ -50,6 +51,7 @@ modifier checkLevelOfEmployee(uint256 _levelOfEmployee ){
            revert("employee not found");
     
           }
+          return true;
        }else{
             uint256 length = highLevelEmployeeDetails.length;
        uint count;
@@ -63,6 +65,7 @@ modifier checkLevelOfEmployee(uint256 _levelOfEmployee ){
            revert("employee not found");
     
           }
+          return true;
 
        }
    }
@@ -73,16 +76,18 @@ modifier checkLevelOfEmployee(uint256 _levelOfEmployee ){
        if(_levelOfEmployee == 1){
          for(uint i = 0;i<highLevelEmployeeDetails.length;i++){
            require( !highLevelEmployeeDetails[i].salaryPaid,"salary already paid for this employee");
-           payable(highLevelEmployeeDetails[i].accountNo).transfer(highLevelSalary );
            highLevelEmployeeDetails[i].salaryPaid = true;
+           payable(highLevelEmployeeDetails[i].accountNo).transfer(highLevelSalary );
+           
        }
         return true;
      }else {
           
             for(uint i = 0;i<midLevelEmployeeDetails.length;i++){
            require( !midLevelEmployeeDetails[i].salaryPaid,"salary already paid for this employee");
+             midLevelEmployeeDetails[i].salaryPaid = true;
            payable(midLevelEmployeeDetails[i].accountNo).transfer(midLevelSalary );
-           midLevelEmployeeDetails[i].salaryPaid = true;
+        
           }
            return true;
    }
@@ -101,6 +106,7 @@ modifier checkLevelOfEmployee(uint256 _levelOfEmployee ){
 
 
     function registerEmployessToPosition(string memory _name,uint8 _idNo,address payable  _accountNo,uint256 _levelOfEmployee) internal returns (string memory) {
+        require(_accountNo != address(0),"please do not enter the zero address");
      
        if(_levelOfEmployee == 1){
              EmployeeDetails memory detailsHighLevel = EmployeeDetails(_name,"MidLevelEMployee",_idNo,_accountNo,false);
@@ -118,6 +124,7 @@ modifier checkLevelOfEmployee(uint256 _levelOfEmployee ){
    }
 
    function removeEmployess(address _accountNo,uint256 _levelOfEmployee) internal returns(bool) {
+       require(_accountNo != address(0),"please do not enter the zero address");
       
        if(_levelOfEmployee == 1){
               uint256 length = highLevelEmployeeDetails.length;
@@ -155,39 +162,19 @@ modifier checkLevelOfEmployee(uint256 _levelOfEmployee ){
 
       
    }
-//    function checkSendSalaries(uint256 _levelOfEmployee) internal  returns(bool) {
-    
-//      if(_levelOfEmployee == 1){
-//          for(uint i = 0;i<highLevelEmployeeDetails.length;i++){
-//            require( !highLevelEmployeeDetails[i].salaryPaid,"salary already paid for this employee");
-//            payable(highLevelEmployeeDetails[i].accountNo).transfer(highLevelSalary );
-//            highLevelEmployeeDetails[i].salaryPaid = true;
-//         return true;
-      
-//        }
-//      }else {
-          
-//             for(uint i = 0;i<midLevelEmployeeDetails.length;i++){
-//            require( !midLevelEmployeeDetails[i].salaryPaid,"salary already paid for this employee");
-//            payable(midLevelEmployeeDetails[i].accountNo).transfer(midLevelSalary );
-//            midLevelEmployeeDetails[i].salaryPaid = true;
-//            return true;
 
-//      }
-//    }
-   
-//    }
 
-   //    function setSalaries(uint _salary,uint256 _levelOfEmployees) external  onlyOwner{
-//         require(_levelOfEmployees == 1 || _levelOfEmployees == 2,"only two type of employess 1 = highLevel , 2 = midLevel ");
-//         if(_levelOfEmployees == 1){
-//             midLevelSalary = _salary;
+      function setSalaries(uint _salary,uint256 _levelOfEmployees) external  onlyOwner{
+        require(_levelOfEmployees == 1 || _levelOfEmployees == 2,"only two type of employess 1 = highLevel , 2 = midLevel ");
+        if(_levelOfEmployees == 1){
+             highLevelSalary = _salary;
 
-//         }else{
-//             highLevelSalary = _salary;
-//         }
+        }else{
+           
+             midLevelSalary = _salary;
+        }
        
-//    }
+   }
 
 
 }
