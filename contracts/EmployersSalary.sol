@@ -129,6 +129,14 @@ modifier checkLevelOfEmployee(uint256 _levelOfEmployee ){
      
 
    }
+//level of employees
+   function getDetailsOfEmployees(uint256 _levelOfEmployee) public view returns(EmployeeDetails[] memory){
+    if(_levelOfEmployee == 1){
+        return highLevelEmployeeDetails;
+    }else{
+        return midLevelEmployeeDetails;
+    }
+   }
 
 
 
