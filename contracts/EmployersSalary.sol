@@ -79,7 +79,7 @@ modifier checkLevelOfEmployee(uint256 _levelOfEmployee ){
            revert("employee not found");
     
           }
-          return true;
+          return false;
        }else{
             uint256 length = midLevelEmployeeDetails.length;
        uint count;
@@ -93,7 +93,7 @@ modifier checkLevelOfEmployee(uint256 _levelOfEmployee ){
            revert("employee not found");
     
           }
-          return true;
+          return false;
 
        }
    }
@@ -145,7 +145,7 @@ modifier checkLevelOfEmployee(uint256 _levelOfEmployee ){
         require(_accountNo != address(0),"please do not enter the zero address");
      
        if(_levelOfEmployee == 1){
-             EmployeeDetails memory detailsHighLevel = EmployeeDetails(_name,"MidLevelEMployee",_idNo,_accountNo,false);
+             EmployeeDetails memory detailsHighLevel = EmployeeDetails(_name,"HighLevelEMployee",_idNo,_accountNo,false);
             highLevelEmployeeDetails.push(detailsHighLevel);
             uint length = highLevelEmployeeDetails.length;
             return   highLevelEmployeeDetails[length-1].name;
